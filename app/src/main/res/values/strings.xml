@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CalendarTechTalk</string>
+    <string name="sign_in_below">Sign in below.</string>
 </resources>
