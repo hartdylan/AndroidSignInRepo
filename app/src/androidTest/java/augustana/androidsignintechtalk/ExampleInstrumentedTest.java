@@ -1,4 +1,4 @@
-package augustana.calendartechtalk;
+package augustana.androidsignintechtalk;
 
 import android.content.Context;
 

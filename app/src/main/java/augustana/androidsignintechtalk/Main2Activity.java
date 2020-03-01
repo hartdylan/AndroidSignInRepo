@@ -1,9 +1,8 @@
-package augustana.calendartechtalk;
+package augustana.androidsignintechtalk;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.accounts.Account;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
