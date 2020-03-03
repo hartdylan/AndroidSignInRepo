@@ -19,24 +19,28 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Authors: Dylan Hart & Scott Daluga
+ * Date: 3 Mar 2020
+ * Class: CSC490
+ *
+ * Description:
+ * This class is used to display user data from the authenticated account and allow
+ * the ability to sign out.
+ */
 public class Main2Activity extends AppCompatActivity {
 
+    // XML references
     ImageView img;
     TextView name, email, id;
     Button signOut;
 
-    GoogleSignInClient c;
+    GoogleSignInClient client; // Client used to interact with Google Sign In API
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        c = GoogleSignIn.getClient(this, gso);
 
         img = findViewById(R.id.imageView2);
         name = findViewById(R.id.name);
@@ -46,16 +50,13 @@ public class Main2Activity extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    // ...
-                    case R.id.signOut:
-                        signOut();
-                        break;
-                    // ...
-                }
+                if (v == signOut) {
+                        signOut();                }
             }
         });
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        client = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
@@ -63,18 +64,20 @@ public class Main2Activity extends AppCompatActivity {
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
-            name.setText(acct.getDisplayName());
-            email.setText(acct.getEmail());
-            id.setText(personId);
-            Glide.with(this).load(String.valueOf(personPhoto)).into(img);
-
+            name.setText("Name: " + acct.getDisplayName());
+            email.setText("Email: " + acct.getEmail());
+            id.setText("Unique email ID: " + personId);
+            Glide.with(this).load(String.valueOf(personPhoto)).into(img); // Fancy way of getting image data from Google and displaying
         }
 
     }
 
+    /**
+     * Method used to handle a button click for signing the current user out and return to the parent
+     * activity where sign in occurs.
+     */
     private void signOut() {
-        c.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+        client.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(Main2Activity.this, "Signed out successfully!", Toast.LENGTH_SHORT).show();
